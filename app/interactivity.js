@@ -181,7 +181,6 @@ d3.select("#stepButton").on("click", () => stepButtonClicked("#stepButton"));
 
 d3.select("#nodeSizeFrom").on("change", nodeSizeClicked);
 document.addEventListener("mouseover", () => {
-    // console.log("mouseover");
     if (document.body.dataset.travels === "true") {
         slider.setAttribute("disabled", true);
     } else {
@@ -207,4 +206,28 @@ document.querySelectorAll(".sortPerformerNames").forEach((element) => {
     d3.select(element).on("click", (evt) => {
         setupDropdown(evt.srcElement.dataset.sort);
     });
+});
+
+d3.select(window).on("resize", (evt) => {
+    [width, height] = getMapSize();
+    d3.select("svg#map").attr("width", width).attr("height", height);
+    store.projection
+        .translate([width / 2, size.height / 2]) // translate to center of screen
+        .scale([2000]); // scale things down so see entire US
+
+    // check if settings is outside
+    settingsOutsideWindow =
+        +window
+            .getComputedStyle(document.querySelector("#settings"))
+            .left.replace("px", "") > window.innerWidth;
+
+    if (settingsOutsideWindow) {
+        createPopBackSettings();
+    }
+});
+
+d3.select("#settingsToggle").on("click", (evt) => {
+    console.log("clickhandler");
+    toggle("#settingsContent");
+    evt.stopPropagation();
 });
