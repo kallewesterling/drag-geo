@@ -7,11 +7,19 @@ const getMapSize = () => {
     return [width, height];
     */
     let width = window.innerWidth;
-    let height = window.innerHeight;
+    let height =
+        window.innerHeight -
+        window
+            .getComputedStyle(document.querySelector("nav"))
+            .height.replace("px", "") -
+        4;
     return [width, height];
 };
 
 [width, height] = getMapSize();
+centerX = width / 2;
+centerY = height / 2;
+
 d3.select("svg#map")
     .attr("width", width)
     .attr("height", height)
